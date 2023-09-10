@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UploadOutlined,
     UserOutlined,
-    VideoCameraOutlined,
     EditOutlined,
     LogoutOutlined,
     InstagramFilled
