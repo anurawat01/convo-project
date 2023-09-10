@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link as ReactLink } from 'react-router-dom';
 import { Button, Checkbox, Divider, Form, Input, Typography } from 'antd';
-import './Login.css';
 const { Link } = Typography;
 
 
-const LoginPage = () => {
+const SignupPage = () => {
     const onFinish = (values) => {
         console.log('Success:', values);
     };
@@ -25,7 +24,7 @@ const LoginPage = () => {
                     span: 20,
                 }}
                 style={{
-                    padding: 60,
+                    padding: 30,
                     height: 600,
                     width: 600,
                     boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)'
@@ -40,10 +39,23 @@ const LoginPage = () => {
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                     <Divider>
                         <Typography.Title level={1} style={{ margin: 0 }} type="secondary">
-                            Login
+                            Signup
                     </Typography.Title>
                     </Divider>
                 </div>
+                <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your name!',
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+
                 <Form.Item
                     label="Username"
                     name="username"
@@ -69,16 +81,17 @@ const LoginPage = () => {
                 >
                     <Input.Password />
                 </Form.Item>
-
                 <Form.Item
-                    name="remember"
-                    valuePropName="checked"
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                    ]}
                 >
-                    <Checkbox>Remember me</Checkbox>
+                    <Input.Password />
                 </Form.Item>
 
                 <Form.Item
@@ -88,7 +101,7 @@ const LoginPage = () => {
                     }}
                 >
                     <Button type="primary" htmlType="submit" ghost>
-                        Submit
+                        Signup
                     </Button>
                 </Form.Item>
 
@@ -99,15 +112,15 @@ const LoginPage = () => {
                     }}
                 >
                     <Button type="primary" htmlType="submit">
-                        Facebook Login
+                        Facebook Signup
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{
                     offset: 8,
                     span: 16,
                 }}>
-                    <ReactLink to='/signup'>
-                        <Link italic>Dont have an account ?</Link>
+                    <ReactLink to='/'>
+                        <Link italic>Already have an account ?</Link>
                     </ReactLink>
                 </Form.Item>
             </Form>
@@ -115,4 +128,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignupPage;
