@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -14,12 +14,14 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import ViewPostCard from '../ViewPost/ViewPost';
 import CreatePostForm from '../CreatePost/CreatePost';
 import PersonInfo from '../ProfileInfo/ProfileInfo';
+import { UserAuthContext } from '../../Context/UserAuthContext';
 
 
 function SideBar({ props }) {
     const navigate = useNavigate();
     const location = useLocation().pathname.split("/").pop();
-    console.log(location);
+    const { logout } = useContext(UserAuthContext);
+
     return (
         <Sider trigger={null} collapsible collapsed={props}>
             <div className="demo-logo-vertical" />
@@ -28,7 +30,12 @@ function SideBar({ props }) {
                 mode="inline"
                 defaultSelectedKeys={[location]}
                 onClick={({ key }) => {
-                    navigate(key);
+                    if (key == 'logout') {
+                        logout();
+                        navigate("/");
+                    } else {
+                        navigate(key);
+                    }
                 }}
                 items={[
                     {
@@ -57,10 +64,8 @@ function SideBar({ props }) {
         </Sider>);
 }
 
-
 const SideNavBar = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const navigate = useNavigate();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -73,9 +78,9 @@ const SideNavBar = () => {
                         style={{
                             padding: 0,
                             background: colorBgContainer,
-                            display: 'flex', // Set display to flex
-                            justifyContent: 'space-between', // Space out items
-                            alignItems: 'center', // Align items vertically in the center
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                         }}
                     >
                         <Button
@@ -102,7 +107,6 @@ const SideNavBar = () => {
                             <Route path="view-post" element={<ViewPostCard />} />
                             <Route path="create-post" element={<CreatePostForm />} />
                             <Route path="profile" element={<PersonInfo />} />
-                            <Route path="logout" element={<div>Logout</div>} />
                         </Routes>
                     </Content>
                 </Layout>
@@ -110,4 +114,5 @@ const SideNavBar = () => {
         </div >
     );
 };
+
 export default SideNavBar;

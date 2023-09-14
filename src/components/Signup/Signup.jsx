@@ -1,15 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
-import { Button, Checkbox, Divider, Form, Input, Typography } from 'antd';
+import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { Button, Checkbox, Divider, Form, Input, Typography, Alert, message } from 'antd';
 const { Link } = Typography;
 
 
 const SignupPage = () => {
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [fullname, setFullname] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const navigate = useNavigate();
+
+
+    const validateFormFields = () => {
+        if (password !== confirmPassword) {
+            setError('Password doesn\'t match');
+            return false;
+        }
+        return true;
     };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+
+    const makeApiRequest = async () => {
+        const data = {
+            name: fullname,
+            username,
+            password,
+        };
+        const url = `${process.env.API_BASE_URL}/auth/register`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        };
+
+        try {
+            const response = await fetch(url, options);
+
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log(responseData);
+                message.success('User Created! Navigating to Login Page')
+                navigate("/");
+                return true;
+            } else {
+                const errorData = await response.json();
+                setError(errorData.message || response.statusText);
+                console.log(response);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Failed to Signup. Please try again.');
+            return false;
+        }
+    };
+
+    const onFinish = async () => {
+        setLoading(true);
+
+        if (!validateFormFields()) {
+            setLoading(false);
+            return;
+        }
+
+        await makeApiRequest();
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        window.addEventListener('message', (event) => {
+            if (event.data.status === 'success') {
+                message.success("Authenticated ! Redirecting to dashboard...")
+                const token = event.data.token;
+                console.log("Received token:", token);
+            }
+        }, false);
+    }, []);
+
+    const handleFbSignup = async () => {
+        setLoading(true);
+        const url = `${process.env.API_BASE_URL}/auth/facebook`;
+        window.open(url, 'facebook-login', 'width=800,height=600');
+    }
+
+    const onFinishFailed = () => {
+        setError('Form submission failed. Please check your input.');
     };
 
     return (
@@ -53,7 +135,7 @@ const SignupPage = () => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input defaultValue={fullname} onChange={(e) => setFullname(e.target.value)} />
                 </Form.Item>
 
                 <Form.Item
@@ -66,7 +148,7 @@ const SignupPage = () => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input defaultValue={username} onChange={(e) => setUsername(e.target.value)} />
                 </Form.Item>
 
                 <Form.Item
@@ -79,7 +161,7 @@ const SignupPage = () => {
                         },
                     ]}
                 >
-                    <Input.Password />
+                    <Input.Password defaultValue={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Item>
                 <Form.Item
                     label="Confirm Password"
@@ -91,7 +173,7 @@ const SignupPage = () => {
                         },
                     ]}
                 >
-                    <Input.Password />
+                    <Input.Password defaultValue={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                 </Form.Item>
 
                 <Form.Item
@@ -100,8 +182,8 @@ const SignupPage = () => {
                         span: 16,
                     }}
                 >
-                    <Button type="primary" htmlType="submit" ghost>
-                        Signup
+                    <Button type="primary" htmlType="submit" ghost disabled={loading}>
+                        {loading ? 'Loading...' : 'Signup'}
                     </Button>
                 </Form.Item>
 
@@ -111,8 +193,8 @@ const SignupPage = () => {
                         span: 16,
                     }}
                 >
-                    <Button type="primary" htmlType="submit">
-                        Facebook Signup
+                    <Button onClick={handleFbSignup} type="primary">
+                        Facebook Login
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{
@@ -123,7 +205,10 @@ const SignupPage = () => {
                         <Link italic>Already have an account ?</Link>
                     </ReactLink>
                 </Form.Item>
+                {error && <Alert message={error} type="error" showIcon closable />}
             </Form>
+
+
         </div>
     );
 };
