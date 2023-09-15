@@ -101,7 +101,7 @@ const SignupPage = () => {
                 }}
                 style={{
                     padding: 30,
-                    height: 600,
+                    minHeight: 600,
                     width: 600,
                     boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)'
                 }}

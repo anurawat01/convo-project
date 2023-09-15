@@ -7,7 +7,7 @@ import {
     LogoutOutlined,
     InstagramFilled
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Avatar } from 'antd';
+import { Layout, Menu, Button, theme, Avatar, message } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { useNavigate } from 'react-router';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -31,6 +31,7 @@ function SideBar({ props }) {
                 defaultSelectedKeys={[location]}
                 onClick={({ key }) => {
                     if (key == 'logout') {
+                        message.loading("Logging out...")
                         logout();
                         navigate("/");
                     } else {
