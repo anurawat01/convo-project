@@ -12,7 +12,7 @@ const LoginPage = () => {
     const [error, setError] = useState(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const { login } = useContext(UserAuthContext);
 
     const onFinish = async () => {

@@ -62,7 +62,6 @@ const CreatePostForm = () => {
     return (
         <>
             <div>
-
                 <Form
                     labelCol={{
                         span: 24,
@@ -72,7 +71,8 @@ const CreatePostForm = () => {
                     }}
                     layout="horizontal"
                     style={{
-                        width: '600px',
+                        minWidth: '360px',
+                        maxWidth: '600px',
                         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.05)",
                         padding: '25px',
                         borderRadius: '2%'
