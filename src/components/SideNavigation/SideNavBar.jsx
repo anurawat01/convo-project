@@ -20,7 +20,7 @@ import { UserAuthContext } from '../../Context/UserAuthContext';
 function SideBar({ props }) {
     const navigate = useNavigate();
     const location = useLocation().pathname.split("/").pop();
-    const { logout } = useContext(UserAuthContext);
+    const { logout, authState } = useContext(UserAuthContext);
 
     return (
         <Sider trigger={null} collapsible collapsed={props}>

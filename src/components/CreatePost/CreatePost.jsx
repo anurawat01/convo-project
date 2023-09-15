@@ -31,8 +31,6 @@ const CreatePostForm = () => {
             formData.append('file', fileList[0].originFileObj);
         }
 
-        console.log(formData);
-
         try {
             const response = await fetch(`${process.env.API_BASE_URL}/post/`, {
                 method: 'POST',
@@ -43,8 +41,6 @@ const CreatePostForm = () => {
             });
 
             if (response.ok) {
-                const jsonResponse = await response.json();
-                console.log('Success:', jsonResponse);
                 message.success("Post created successfully!");
                 setTitle('');
                 setCaption('');

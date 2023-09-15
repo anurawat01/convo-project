@@ -41,17 +41,13 @@ const SignupPage = () => {
 
         try {
             const response = await fetch(url, options);
-
             if (response.ok) {
-                const responseData = await response.json();
-                console.log(responseData);
                 message.success('User Created! Navigating to Login Page')
                 navigate("/");
                 return true;
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || response.statusText);
-                console.log(response);
                 return false;
             }
         } catch (error) {
@@ -78,8 +74,6 @@ const SignupPage = () => {
         window.addEventListener('message', (event) => {
             if (event.data.status === 'success') {
                 message.success("Authenticated ! Redirecting to dashboard...")
-                const token = event.data.token;
-                console.log("Received token:", token);
             }
         }, false);
     }, []);

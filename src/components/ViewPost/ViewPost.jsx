@@ -19,14 +19,11 @@ const ViewPostCard = () => {
                         "Authorization": `Bearer ${authState.token.token}`
                     }
                 });
-
                 if (!response.ok) {
                     throw new Error('Failed to fetch posts');
                 }
-
                 const data = await response.json();
                 setPosts(data);
-                console.log(data);
             } catch (error) {
                 setError(error.message);
             } finally {

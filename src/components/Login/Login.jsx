@@ -35,13 +35,11 @@ const LoginPage = () => {
             const response = await fetch(url, options);
             if (response.ok) {
                 const responseData = await response.json();
-                console.log(responseData);
                 login(responseData);
                 message.success("Authenticated !")
                 navigate("/dashboard");
             } else {
                 setError(response.statusText);
-                console.log(response);
             }
         } catch (error) {
             console.error('Error:', error);

@@ -1,25 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import { UserAuthContext, UserAuthProvider } from '../Context/UserAuthContext';
 import LoginPage from './Login/Login';
-import { Route, BrowserRouter, Routes, useNavigate, useLocation } from 'react-router-dom';
 import SideNavBar from './SideNavigation/SideNavBar';
 import SignupPage from './Signup/Signup';
-import { UserAuthProvider, UserAuthContext } from '../Context/UserAuthContext';
 
+
+const ProtectedRoute = ({ children }) => {
+    const { authState } = useContext(UserAuthContext);
+
+    if (!authState.isAuthenticated) {
+        return <Navigate to="/" />;
+    }
+
+    return children;
+};
 
 const AppRoutes = () => {
-    const navigate = useNavigate();
-    const { authState } = useContext(UserAuthContext);
-    if (!authState.isAuthenticated) {
-        navigate("/");
-    }
+
     return (
         <Routes>
-            <Route exact path="/" element={<LoginPage />} />
-            <Route path="/dashboard/*" element={<SideNavBar />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route
+                path="/dashboard/*"
+                element={
+                    <ProtectedRoute>
+                        <SideNavBar />
+                    </ProtectedRoute>
+                }
+            />
         </Routes>
     );
 };
+
 
 function App() {
     return (

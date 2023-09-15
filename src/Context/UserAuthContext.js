@@ -14,7 +14,6 @@ export const UserAuthProvider = ({ children }) => {
     }, []);
 
     const login = (token) => {
-        console.log(token);
         setAuthState({ isAuthenticated: true, token });
         localStorage.setItem('authTokenConvo', token);
     };

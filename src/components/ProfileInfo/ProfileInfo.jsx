@@ -21,7 +21,6 @@ const PersonInfo = () => {
                 const response = await fetch(apiEndpoint, options);
                 if (response.ok) {
                     const responseData = await response.json();
-                    console.log(responseData);
                     setUserData(responseData);
                 } else {
                     setError(`Failed to fetch data: ${response.statusText}`);
